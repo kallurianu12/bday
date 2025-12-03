@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Birthday Surprise 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:"Poppins",system-ui,sans-serif;
+      background:radial-gradient(circle at top,#ffe7f3,#fff5ff);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:#ff4b8b;
+    }
+    .app{
+      width:100%;
+      max-width:400px;
+      background:#ffffffee;
+      border-radius:26px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.08);
+      padding:22px 18px 26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .screen{display:none;animation:fade .4s ease;}
+    .screen.active{display:block;}
+    @keyframes fade{
+      from{opacity:0;transform:translateY(10px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    h1,h2,h3{text-align:center;margin-bottom:8px;font-weight:700;}
+    h1{font-size:24px;}
+    h2{font-size:20px;}
+    p{
+      font-size:14px;
+      color:#ff6b9d;
+      text-align:center;
+      line-height:1.6;
+      margin-bottom:8px;
+    }
+    .card{
+      background:#fff9fd;
+      border-radius:20px;
+      padding:16px 14px 18px;
+      box-shadow:0 10px 24px rgba(255,135,178,0.18);
+      margin:12px 0 18px;
+      position:relative;
+    }
+    .btn{
+      width:100%;
+      border:none;
+      padding:12px 16px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#ff6fb5,#ff3e86);
+      color:#fff;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 10px 22px rgba(255,84,148,0.35);
+      margin-top:6px;
+      transition:transform .1s ease,box-shadow .1s ease;
+    }
+    .btn:active{
+      transform:translateY(1px);
+      box-shadow:0 4px 14px rgba(255,84,148,0.28);
+    }
+    .small{font-size:11px;text-align:center;margin-top:6px;opacity:.7;}
+
+    /* kawaii bears */
+    .bears-hero{
+      display:block;
+      width:150px;
+      margin:0 auto 12px;
+    }
+    .tiny-bears{
+      display:block;
+      width:80px;
+      margin:6px auto 4px;
+    }
+
+    /* Love letter scroll */
+    .letter-body{
+      max-height:250px;
+      overflow-y:auto;
+      text-align:left;
+      padding-right:4px;
+    }
+    .letter-body p{text-align:left;margin-bottom:10px;}
+
+    /* Cake canvas */
+    .cake-wrap{display:flex;justify-content:center;margin-top:10px;}
+    #cakeCanvas{
+      border-radius:20px;
+      background:#ffe5ef;
+      touch-action:none;
+    }
+    .hint{font-size:12px;opacity:.8;}
+
+    /* Wish cards */
+    .cards{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+    .card-item{
+      background:#ffe2f3;
+      border-radius:16px;
+      padding:12px;
+      text-align:center;
+      cursor:pointer;
+      font-weight:600;
+      font-size:15px;
+      box-shadow:0 4px 14px rgba(255,135,178,0.18);
+      transition:all .25s ease;
+      position:relative;
+    }
+    .card-item:hover{transform:translateY(-1px);}
+    .card-message{
+      display:none;
+      margin-top:6px;
+      font-size:13px;
+      color:#ff4b8b;
+    }
+    .card-item.open{
+      background:#fff;
+      box-shadow:0 6px 18px rgba(255,135,178,0.26);
+    }
+    .card-item.open .card-message{display:block;}
+
+    footer{
+      text-align:center;
+      font-size:11px;
+      margin-top:8px;
+      color:#ff7aa8;
+    }
+
+    /* Final letter + seal overlay */
+    .seal-overlay{
+      position:absolute;
+      inset:0;
+      background:rgba(255,235,245,0.96);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      padding:24px;
+      text-align:center;
+    }
+    .seal-overlay.show{display:flex;}
+    .seal-circle{
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 30%,#ffd1e4,#ff4b8b);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-size:30px;
+      margin-bottom:14px;
+      box-shadow:0 6px 16px rgba(255,84,148,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- SCREEN 1: INTRO -->
+    <div class="screen active" id="screen-1">
+      <div class="card">
+        <!-- cute couple bears -->
+        <svg viewBox="0 0 140 90" class="bears-hero">
+          <rect x="0" y="0" width="140" height="90" rx="20" fill="#bfefff" opacity="0.45"/>
+          <circle cx="90" cy="48" r="22" fill="#d8a06b"/>
+          <circle cx="74" cy="32" r="7" fill="#d8a06b"/>
+          <circle cx="106" cy="32" r="7" fill="#d8a06b"/>
+          <circle cx="82" cy="44" r="3.5" fill="#5b3a23"/>
+          <circle cx="98" cy="44" r="3.5" fill="#5b3a23"/>
+          <circle cx="90" cy="52" r="4" fill="#f7d6b0"/>
+          <circle cx="56" cy="46" r="22" fill="#ffffff"/>
+          <circle cx="40" cy="30" r="7" fill="#ffffff"/>
+          <circle cx="72" cy="30" r="7" fill="#ffffff"/>
+          <circle cx="50" cy="44" r="3.5" fill="#444"/>
+          <circle cx="62" cy="44" r="3.5" fill="#444"/>
+          <circle cx="56" cy="52" r="4" fill="#ffd4e2"/>
+        </svg>
+
+        <h3>Happy Birthday! 🎉</h3>
+        <h1>Happy Birthday, My Love 💖</h1>
+        <p>Today is all about celebrating the most amazing boy in my world.</p>
+        <p>I made something magical just for you on your special day…</p>
+        <p style="margin-top:10px;font-size:13px;">Ready for your birthday surprise? 🧸✨</p>
+      </div>
+      <button class="btn" onclick="startSurprise()">Let’s Gooo 💕</button>
+      <p class="small">Made with endless love for you 💌</p>
+    </div>
+
+    <!-- SCREEN 2: LOVE LETTER -->
+    <div class="screen" id="screen-2">
+      <h2>A Birthday Love Letter 💌</h2>
+      <p>From my heart to my birthday king 👑</p>
+      <div class="card">
+        <div class="letter-body">
+          <p><strong>My dearest cuteee kalyan,</strong></p>
+          <p>Today marks another year of your beautiful existence, and I’m so grateful that I get to celebrate it with you. You bring joy, comfort and the cutest chaos into my life.</p>
+          <p>Thank you for loving me when I’m happy, moody, dramatic and everything in between. With you I feel safe, seen and so, so loved.</p>
+          <p>You deserve all the magic this world can offer – soft mornings, peaceful nights, big victories and the quiet little wins no one else notices.</p>
+          <p>My wish is simple: may this year be gentle with your heart and kind to your dreams. And I promise to stand beside you through it all.</p>
+          <p>Happy birthday, my favourite person.</p>
+          <p>Forever yours,<br><em>Anu</em> 💗</p>
+        </div>
+      </div>
+      <button class="btn" onclick="goTo(3)">Take me to the cake 🎂</button>
+    </div>
+
+    <!-- SCREEN 3: REALISTIC CAKE – BLOW & CUT -->
+    <div class="screen" id="screen-3">
+      <h2>It’s Cake Time! 🎂</h2>
+      <p>First blow the candle… then draw a line to cut the cake ✂️</p>
+      <p class="hint">Step 1: Tap “Blow the candle” • Step 2: Drag your finger across the cake to slice it.</p>
+
+      <div class="cake-wrap">
+        <canvas id="cakeCanvas" width="300" height="200"></canvas>
+      </div>
+
+      <button class="btn" onclick="blowCandle()" style="margin-top:14px;">Blow the candle 🕯️💨</button>
+      <button class="btn" style="margin-top:8px;" onclick="goTo(4)">Time to Make a Wish ✨</button>
+    </div>
+
+    <!-- SCREEN 4: WISH + KAWAII BEAR PICK CARDS -->
+    <div class="screen" id="screen-4">
+      <h2>Time to Make a Wish ✨</h2>
+      <div class="card">
+        <p>Close your eyes, take a deep breath and make a birthday wish. 🌟</p>
+        <p style="font-size:13px;">Tap a card to see a kawaii bear surprise & my wish for you:</p>
+
+        <div class="cards">
+          <!-- CARD 1 -->
+          <div class="card-item" onclick="toggleCard(this)">
+            Soft Heart Wish 🧸
+            <div class="card-message">
+              <!-- kawaii cuddle bears -->
+              <svg viewBox="0 0 80 60" class="tiny-bears">
+                <rect x="0" y="0" width="80" height="60" rx="16" fill="#bfefff" opacity="0.6"/>
+                <circle cx="50" cy="34" r="15" fill="#d8a06b"/>
+                <circle cx="42" cy="24" r="5" fill="#d8a06b"/>
+                <circle cx="58" cy="24" r="5" fill="#d8a06b"/>
+                <circle cx="30" cy="34" r="15" fill="#ffffff"/>
+                <circle cx="22" cy="24" r="5" fill="#ffffff"/>
+                <circle cx="38" cy="24" r="5" fill="#ffffff"/>
+              </svg>
+              I wish your heart stays soft, happy and peaceful this whole year.
+            </div>
+          </div>
+
+          <!-- CARD 2 -->
+          <div class="card-item" onclick="toggleCard(this)">
+            Dream Wish 🌙
+            <div class="card-message">
+              <svg viewBox="0 0 80 60" class="tiny-bears">
+                <rect x="0" y="0" width="80" height="60" rx="16" fill="#ffe6f3" opacity="0.7"/>
+                <circle cx="28" cy="34" r="15" fill="#ffffff"/>
+                <circle cx="52" cy="34" r="15" fill="#d8a06b"/>
+                <circle cx="40" cy="18" r="6" fill="#ffd4e2"/>
+              </svg>
+              I wish every dream in your heart slowly starts becoming reality.
+            </div>
+          </div>
+
+          <!-- CARD 3 -->
+          <div class="card-item" onclick="toggleCard(this)">
+            Protection Wish 🛡️
+            <div class="card-message">
+              <svg viewBox="0 0 80 60" class="tiny-bears">
+                <rect x="0" y="0" width="80" height="60" rx="16" fill="#d6f7ff" opacity="0.7"/>
+                <circle cx="30" cy="32" r="15" fill="#ffffff"/>
+                <circle cx="50" cy="32" r="15" fill="#d8a06b"/>
+                <rect x="24" y="40" width="32" height="6" rx="3" fill="#ff6f9f"/>
+              </svg>
+              I wish you’re always protected, guided and never feel alone in anything.
+            </div>
+          </div>
+
+          <!-- CARD 4 – KISS SURPRISE -->
+          <div class="card-item" onclick="toggleCard(this)">
+            Secret Kiss Surprise 😘
+            <div class="card-message">
+              <!-- bears giving kiss -->
+              <svg viewBox="0 0 80 60" class="tiny-bears">
+                <rect x="0" y="0" width="80" height="60" rx="16" fill="#ffe0f0" opacity="0.9"/>
+                <!-- brown bear -->
+                <circle cx="50" cy="34" r="15" fill="#d8a06b"/>
+                <circle cx="42" cy="24" r="5" fill="#d8a06b"/>
+                <circle cx="58" cy="24" r="5" fill="#d8a06b"/>
+                <!-- white bear kissing -->
+                <circle cx="30" cy="34" r="15" fill="#ffffff"/>
+                <circle cx="22" cy="24" r="5" fill="#ffffff"/>
+                <circle cx="38" cy="24" r="5" fill="#ffffff"/>
+                <!-- heart kiss -->
+                <path d="M24 18c2-4 7-3 7 2 0 4-4 6-7 8-3-2-7-4-7-8 0-5 5-6 7-2z"
+                      fill="#ff6f9f"/>
+              </svg>
+              Surprise! I’m sending you a big birthday kiss and a promise: no matter how far we are or how life changes, you’ll always have my love. Muahhh 😚💗
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn" onclick="goTo(5)">See your final letter 💌</button>
+    </div>
+
+    <!-- SCREEN 5: FINAL LETTER + SEAL -->
+    <div class="screen" id="screen-5">
+      <h2>My Final Birthday Letter 💝</h2>
+      <div class="card">
+        <div class="letter-body">
+          <p><strong>To the boy I love the most,</strong></p>
+          <p>If I could wrap all my feelings into one gift, it would be this letter. A tiny reminder that no matter how loud the world gets, you always have one person quietly cheering for you – me.</p>
+          <p>Whenever you feel tired, discouraged or alone, I want you to remember this birthday and how deeply you are loved. Not just today, not just on special days – but on all the ordinary days in between.</p>
+          <p>Thank you for being my favourite message, my favourite call, my favourite hug and my favourite home. I’m so proud of you, and I’m so excited to see the man you’re becoming.</p>
+          <p>No matter how many birthdays pass, I hope I’m always there – cutting cakes with you, making stupid wishes with you and loving you a little more every year.</p>
+          <p>Happy birthday, my forever boy. This heart is sealed with your name on it. 💌</p>
+          <p>With all my love,<br><em>Anu</em></p>
+        </div>
+      </div>
+      <button class="btn" onclick="sealLetter()">Seal this letter 💌</button>
+      <button class="btn" style="margin-top:8px;background:linear-gradient(135deg,#ffc3e3,#ff7ab2);" onclick="goTo(1)">Restart the surprise 🔁</button>
+    </div>
+
+    <!-- SEAL OVERLAY -->
+    <div id="seal" class="seal-overlay">
+      <div class="seal-circle">💌</div>
+      <h3>Letter Sealed with Love</h3>
+      <p style="margin-top:8px;">This birthday letter is now safely sealed in my heart, only for you. Whenever you miss me, remember this moment. 🧸💗</p>
+      <button class="btn" style="margin-top:18px;" onclick="goTo(1);hideSeal();">Open from the start again 🔁</button>
+    </div>
+
+    <footer>Made with silly love and soft bear hugs 🧸💕</footer>
+  </div>
+
+  <!-- BACKGROUND MUSIC -->
+  <audio id="bgm" src="c:\Users\Asus\Downloads\dude_telugu_boomboom (online-audio-converter.com).mp3" loop></audio>
+
+  <script>
+    function goTo(num){
+      document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+      document.getElementById("screen-"+num).classList.add("active");
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function startSurprise(){
+      goTo(2);
+      const audio=document.getElementById("bgm");
+      if(audio && audio.src){ audio.play().catch(()=>{}); }
+    }
+
+    function toggleCard(el){
+      el.classList.toggle("open");
+    }
+
+    function sealLetter(){
+      document.getElementById("seal").classList.add("show");
+    }
+    function hideSeal(){
+      document.getElementById("seal").classList.remove("show");
+    }
+
+    /* REALISTIC CAKE WITH 2 SWANS – BLOW & CUT */
+    const canvas=document.getElementById("cakeCanvas");
+    let candleOn=true;
+    let drawing=false;
+
+    if(canvas){
+      const ctx=canvas.getContext("2d");
+
+      function drawCake(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        // plate
+        ctx.fillStyle="#f7dfe9";
+        ctx.beginPath();
+        ctx.ellipse(150,160,120,20,0,0,Math.PI*2);
+        ctx.fill();
+
+        // cake body (round, gradient)
+        const grad=ctx.createLinearGradient(0,60,0,150);
+        grad.addColorStop(0,"#ffe3f0");
+        grad.addColorStop(1,"#ffb6c9");
+        ctx.fillStyle=grad;
+        ctx.beginPath();
+        ctx.ellipse(150,120,90,50,0,0,Math.PI*2);
+        ctx.fill();
+
+        // top icing
+        ctx.fillStyle="#fff2fb";
+        ctx.beginPath();
+        ctx.ellipse(150,90,80,30,0,0,Math.PI*2);
+        ctx.fill();
+
+        // simple icing drips
+        ctx.fillStyle="#ffd0e6";
+        for(let x=95;x<=205;x+=22){
+          ctx.beginPath();
+          ctx.ellipse(x,115,6,10,0,0,Math.PI*2);
+          ctx.fill();
+        }
+
+        // two swans on top (couple)
+        drawSwan(130,82,true);
+        drawSwan(170,82,false);
+
+        // small heart between swans
+        ctx.fillStyle="#ff6f9f";
+        ctx.beginPath();
+        ctx.moveTo(150,60);
+        ctx.bezierCurveTo(145,52,135,52,135,60);
+        ctx.bezierCurveTo(135,68,150,74,150,80);
+        ctx.bezierCurveTo(150,74,165,68,165,60);
+        ctx.bezierCurveTo(165,52,155,52,150,60);
+        ctx.fill();
+
+        // candle if still on
+        if(candleOn){
+          ctx.fillStyle="#ff4b8b";
+          ctx.fillRect(145,40,10,30);
+          // flame
+          ctx.beginPath();
+          ctx.ellipse(150,32,6,10,0,0,Math.PI*2);
+          ctx.fillStyle="#ffb400";
+          ctx.fill();
+        }else{
+          // little smoke puff
+          ctx.strokeStyle="rgba(120,120,120,0.7)";
+          ctx.lineWidth=2;
+          ctx.beginPath();
+          ctx.moveTo(150,42);
+          ctx.quadraticCurveTo(155,32,148,25);
+          ctx.stroke();
+        }
+      }
+
+      function drawSwan(cx,cy,left){
+        ctx.fillStyle="#ffffff";
+        // body
+        ctx.beginPath();
+        ctx.ellipse(cx,cy+8,10,6,0,0,Math.PI*2);
+        ctx.fill();
+        // neck
+        ctx.beginPath();
+        if(left){
+          ctx.moveTo(cx,cy+5);
+          ctx.quadraticCurveTo(cx-5,cy-5,cx,cy-10);
+        }else{
+          ctx.moveTo(cx,cy+5);
+          ctx.quadraticCurveTo(cx+5,cy-5,cx,cy-10);
+        }
+        ctx.lineWidth=3;
+        ctx.strokeStyle="#ffffff";
+        ctx.stroke();
+        // head
+        ctx.beginPath();
+        ctx.arc(cx,cy-11,4,0,Math.PI*2);
+        ctx.fill();
+        // beak
+        ctx.beginPath();
+        ctx.moveTo(cx+ (left?-4:4),cy-11);
+        ctx.lineTo(cx+ (left?-8:8),cy-10);
+        ctx.lineTo(cx+ (left?-4:4),cy-9);
+        ctx.fillStyle="#ffb36f";
+        ctx.fill();
+      }
+
+      function redraw(){ drawCake(); }
+      redraw();
+
+      function getPos(e){
+        const rect=canvas.getBoundingClientRect();
+        if(e.touches && e.touches[0]){
+          return {
+            x:e.touches[0].clientX-rect.left,
+            y:e.touches[0].clientY-rect.top
+          };
+        }
+        return {x:e.offsetX,y:e.offsetY};
+      }
+
+      function startDraw(e){
+        if(candleOn) return; // can't cut until candle is blown
+        e.preventDefault();
+        drawing=true;
+        const pos=getPos(e);
+        ctx.strokeStyle="#ff3e86";
+        ctx.lineWidth=4;
+        ctx.beginPath();
+        ctx.moveTo(pos.x,pos.y);
+      }
+      function draw(e){
+        if(!drawing) return;
+        e.preventDefault();
+        const pos=getPos(e);
+        ctx.lineTo(pos.x,pos.y);
+        ctx.stroke();
+      }
+      function endDraw(){
+        drawing=false;
+      }
+
+      canvas.addEventListener("mousedown",startDraw);
+      canvas.addEventListener("mousemove",draw);
+      canvas.addEventListener("mouseup",endDraw);
+      canvas.addEventListener("mouseleave",endDraw);
+
+      canvas.addEventListener("touchstart",startDraw,{passive:false});
+      canvas.addEventListener("touchmove",draw,{passive:false});
+      canvas.addEventListener("touchend",endDraw,{passive:false});
+
+      // make blowCandle function available
+      window.blowCandle=function(){
+        candleOn=false;
+        redraw();
+      };
+    }
+  </script>
+</body>
+</html
